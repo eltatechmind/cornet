@@ -8,9 +8,9 @@ RSpec.describe 'Tasks API', type: :request do
   let!(:project_2) { create(:project, user_id: user_2.id) }
   let!(:tasks) { create_list(:task, 10, project_id: project.id) }
   let!(:tasks_2) { create_list(:task, 3, project_id: project_2.id) }
-  let(:task_id) { tasks.first.id }
-  let(:task_id_2) { tasks_2.first.id }
-  let(:params) do
+  let!(:task_id) { tasks.first.id }
+  let!(:task_id_2) { tasks_2.first.id }
+  let!(:params) do
     {
         email: user.email,
         password: user.password
@@ -70,7 +70,7 @@ RSpec.describe 'Tasks API', type: :request do
   end
 
   # Test suite for POST /tasks
-  describe 'POST /projects' do
+  describe 'POST /tasks' do
     # valid payload
     let(:valid_attributes) { { name: 'Learn Elm', project_id: project.id} }
 
@@ -95,7 +95,7 @@ RSpec.describe 'Tasks API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Name can't be blank/)
+          .to match("{\"message\":\"Validation failed: Name can't be blank, Name is too short (minimum is 6 characters)\"}")
       end
     end
   end

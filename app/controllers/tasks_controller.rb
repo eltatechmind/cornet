@@ -2,6 +2,7 @@ class TasksController < ApplicationController
   include Devise::Controllers::Helpers 
   before_action :authenticate_user!
   before_action :set_current_user
+  before_action :set_project, only: [:create]
   before_action :set_task, only: [:show, :update, :destroy]
   
   # GET /tasks
@@ -12,8 +13,12 @@ class TasksController < ApplicationController
 
   # POST /tasks
   def create
-    @task = Task.create!(task_params)
-    json_response(@task, :created)
+    if @project.present?
+      @task = Task.create!(task_params)
+      json_response(@task, :created)
+    else
+      head :unauthorized
+    end
   end
 
   # GET /tasks/:id
@@ -46,7 +51,7 @@ class TasksController < ApplicationController
   end
 
   private
-
+  
   def set_current_user
      @user = current_user
   end
@@ -54,6 +59,11 @@ class TasksController < ApplicationController
   def task_params
     # whitelist params
     params.permit(:name, :project_id, :plevel, :deadline, :done)
+  end
+
+  def set_project
+    @project = Project.find(params[:project_id])
+    @project = nil unless @project.user_id == @user.id
   end
 
   def set_task
