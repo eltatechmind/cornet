@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class ProjectsController < ApplicationController
-  include Devise::Controllers::Helpers 
+  include Devise::Controllers::Helpers
   before_action :authenticate_user!
   before_action :set_current_user
   before_action :set_project, only: [:show, :update, :destroy]
-  
+
   # GET /projects
   def index
     json_response(@user.projects)
@@ -20,7 +22,7 @@ class ProjectsController < ApplicationController
     if @project.present?
       json_response(@project)
     else
-      head :not_found 
+      head(:not_found)
     end
   end
 
@@ -28,26 +30,26 @@ class ProjectsController < ApplicationController
   def update
     if @project.present?
       @project.update(project_params)
-      head :ok
+      head(:ok)
     else
-      head :unauthorized
+      head(:unauthorized)
     end
   end
 
   # DELETE /projects/:id
   def destroy
     if @project.present?
-      @project.destroy 
-      head :ok
+      @project.destroy
+      head(:ok)
     else
-      head :unauthorized
+      head(:unauthorized)
     end
   end
 
   private
 
   def set_current_user
-     @user = current_user
+    @user = current_user
   end
 
   def project_params

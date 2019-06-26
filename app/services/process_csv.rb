@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 class ProcessCsv
   require 'csv'
@@ -12,7 +13,7 @@ class ProcessCsv
     csv_text = Net::HTTP.get(uri)
     csv = CSV.parse(csv_text, headers: true)
     csv.each do |row|
-      Mycsv.create(row.to_hash.delete_if { |k,v| v.nil? }.merge!(comment_id: @id))
+      Mycsv.create(row.to_hash.delete_if { |_k, v| v.nil? }.merge!(comment_id: @id))
     end
   end
 end

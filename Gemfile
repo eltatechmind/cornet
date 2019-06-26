@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -24,6 +26,7 @@ gem 'awesome_print'
 # gem 'capistrano-rails', group: :development
 gem 'devise'
 gem 'rubocop'
+gem 'rubocop-require_tools'
 gem 'devise_token_auth'
 gem 'fast_jsonapi'
 # Reduces boot times through caching; required in config/boot.rb
@@ -51,7 +54,6 @@ group :test do
   gem 'faker'
   gem 'database_cleaner'
 end
-
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentsController < ApplicationController
   require 'csv'
   require 'net/http'
@@ -11,7 +13,7 @@ class CommentsController < ApplicationController
     if @task.present?
       json_response(@task.comments)
     else
-      head :not_found
+      head(:not_found)
     end
   end
 
@@ -20,7 +22,7 @@ class CommentsController < ApplicationController
     if @comment.present?
       json_response(@comment)
     else
-      head :not_found
+      head(:not_found)
     end
   end
 
@@ -30,7 +32,7 @@ class CommentsController < ApplicationController
       @task.comments.create!(comment_params)
       json_response(@task, :created)
     else
-      head :unauthorized
+      head(:unauthorized)
     end
   end
 
@@ -38,9 +40,9 @@ class CommentsController < ApplicationController
   def update
     if @comment.present?
       @comment.update(comment_params)
-      head :no_content
+      head(:no_content)
     else
-      head :not_found
+      head(:not_found)
     end
   end
 
@@ -48,9 +50,9 @@ class CommentsController < ApplicationController
   def destroy
     if @comment.present?
       @comment.destroy
-      head :no_content
+      head(:no_content)
     else
-      head :not_found
+      head(:not_found)
     end
   end
 
@@ -59,16 +61,16 @@ class CommentsController < ApplicationController
     if @comment.task.project.user_id == @user.id
       ProcessCsv.new(params[:url], @comment.id).proce
     else
-      head :unauthorized
+      head(:unauthorized)
     end
   end
 
   def display_csv_imported
     @comment = Comment.find(params[:comment_id])
     if @comment.task.project.user_id == @user.id
-      render json: @comment.mycsvs, status: :ok
+      render(json: @comment.mycsvs, status: :ok)
     else
-      head :unauthorized
+      head(:unauthorized)
     end
   end
 
@@ -83,15 +85,13 @@ class CommentsController < ApplicationController
   end
 
   def set_task
-    @task = Task.find(params[:task_id]) 
+    @task = Task.find(params[:task_id])
     @task = nil unless @task.project.user_id == @user.id
   end
 
   def set_task_comment
-    if @task.present?
-      @comment = @task.comments.find_by!(id: params[:id]) 
-    else
-      @comment = nil
+    @comment = if @task.present?
+      @task.comments.find_by!(id: params[:id])
     end
   end
 end
