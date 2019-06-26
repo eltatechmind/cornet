@@ -39,18 +39,24 @@ or check my older tutorial with photos for a task I finished earlier for another
 
 ## Importing CSV Files
 
-- for importing csv files records into our web api database, I created a model called Mycsv, which is in a many to one relation with user model.
-- since we can't send csv file as a parameter in postman, the csv file will be hosted on amazon aws first, for me I used Dropbox which is free, I uploaded the file there, then I downloaded the file through chrome, copy the download link, then visit the /csvfiles endpoint from postman while sending param of key "url" and value "the download link", this will start importing the csv file content into our Mycsv model, each row in the csv file as a record, and every record will have a user_id column too which show this record was imported by which user (according to which user was logging in when he was importing the file)
-- the Mycsv model has no endpoints to call, or controller for sure, as these files are being imported to the database from the csv files.
+- for importing csv files records into our web api database, I created a model called Mycsv, which is in a many to one relation with comment model.
+- since we can't send csv file as a parameter in postman, the csv file will be hosted on amazon aws first, for me I used Dropbox which is free, I uploaded the file there, then I downloaded the file through chrome, copy the download link, then visit the /csvfiles endpoint from postman while sending param of key "comment_id" and key "url"
+- the comment_id key will carry the id of the comment that we want to include in the mycsv records created (the comment which the csv file and records belongs too), you can also view all your user records imported to mycsv file based on the comment,
+just visit /displaycsv while sending comment_id param and see the magic.
+- when visiting the endpoint /csvfiles, this will start importing the csv file content into our Mycsv model, each row in the csv file as a record, and every record will have a comment_id column too which show this record was imported while belonging to which comment.
 - the Mycsv model consists of two columns, "first" and "second", you can rename them according to the need of the data being stored in the model
 
 ## Exception Handling
 
 - a file was created for handling exceptions
 
+## Rubocop
+
+- Rubocop Styling Configurations were added, The configurations added are the ones being used by Shopify company
+
 ## Future (if there was more time)
-- I would add rubocop
-- I would get the api on production
+
+- I would get the api on production (but that wasn't asked on the task)
 - I would connect my rails api to rollbar for catching production errors
 - I would use graphql and implementing it from scratch for the first time
 - I would create a background service
