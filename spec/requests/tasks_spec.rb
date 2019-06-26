@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'Tasks API', type: :request do
-  # initialize test data 
+RSpec.describe('Tasks API', type: :request) do
+  # initialize test data
   let!(:user) { create(:user) }
-  let!(:user_2) { create(:user)}
+  let!(:user_2) { create(:user) }
   let!(:project) { create(:project, user_id: user.id) }
   let!(:project_2) { create(:project, user_id: user_2.id) }
   let!(:tasks) { create_list(:task, 10, project_id: project.id) }
@@ -12,17 +14,17 @@ RSpec.describe 'Tasks API', type: :request do
   let!(:task_id_2) { tasks_2.first.id }
   let!(:params) do
     {
-        email: user.email,
-        password: user.password
+      email: user.email,
+      password: user.password,
     }
   end
   before do
     post '/auth/sign_in', params: params
     @headers = {
-        "access-token": response.headers["access-token"],
-        "uid": response.headers["uid"],
-        "client": response.headers["client"],
-      }
+      "access-token": response.headers["access-token"],
+      "uid": response.headers["uid"],
+      "client": response.headers["client"],
+    }
   end
 
   # Test suite for GET /tasks
@@ -31,27 +33,26 @@ RSpec.describe 'Tasks API', type: :request do
     before { get '/tasks', headers: @headers }
 
     it 'returns tasks' do
-      expect(json).not_to be_empty
-      expect(JSON.parse(response.body)["data"].count).to eq(10)
+      expect(json).not_to(be_empty)
+      expect(JSON.parse(response.body)["data"].count).to(eq(10))
     end
 
     it 'returns status code 200' do
-      expect(response).to have_http_status(200)
+      expect(response).to(have_http_status(200))
     end
   end
 
   # Test suite for GET /tasks/:id
   describe 'GET /tasks/:id' do
-
     context 'when the record exists' do
       before { get "/tasks/#{task_id}", headers: @headers }
       it 'returns the task' do
-        expect(json).not_to be_empty
-        expect(JSON.parse(response.body)["data"]["id"].to_i).to eq(task_id)
+        expect(json).not_to(be_empty)
+        expect(JSON.parse(response.body)["data"]["id"].to_i).to(eq(task_id))
       end
 
       it 'returns status code 200' do
-        expect(response).to have_http_status(200)
+        expect(response).to(have_http_status(200))
       end
     end
 
@@ -60,11 +61,11 @@ RSpec.describe 'Tasks API', type: :request do
       let(:task_id) { 100 }
 
       it 'returns status code 404' do
-        expect(response).to have_http_status(404)
+        expect(response).to(have_http_status(404))
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Task/)
+        expect(response.body).to(match(/Couldn't find Task/))
       end
     end
   end
@@ -72,30 +73,32 @@ RSpec.describe 'Tasks API', type: :request do
   # Test suite for POST /tasks
   describe 'POST /tasks' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', project_id: project.id} }
+    let(:valid_attributes) { { name: 'Learn Elm', project_id: project.id } }
 
     context 'when the request is valid' do
       before { post '/tasks', params: valid_attributes, headers: @headers }
 
       it 'creates a task' do
-        expect(JSON.parse(response.body)["data"]["attributes"]["name"]).to eq('Learn Elm')
+        expect(JSON.parse(response.body)["data"]["attributes"]["name"]).to(eq('Learn Elm'))
       end
 
       it 'returns status code 201' do
-        expect(response).to have_http_status(201)
+        expect(response).to(have_http_status(201))
       end
     end
 
     context 'when the request is invalid' do
-      before { post '/tasks', params: { project_id: project.id}, headers: @headers }
+      before { post '/tasks', params: { project_id: project.id }, headers: @headers }
 
       it 'returns status code 422' do
-        expect(response).to have_http_status(422)
+        expect(response).to(have_http_status(422))
       end
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"message\":\"Validation failed: Name can't be blank, Name is too short (minimum is 6 characters)\"}")
+          .to(match(
+            "{\"message\":\"Validation failed: Name can't be blank, Name is too short (minimum is 6 characters)\"}"
+          ))
       end
     end
   end
@@ -108,11 +111,11 @@ RSpec.describe 'Tasks API', type: :request do
       before { put "/tasks/#{task_id}", params: valid_attributes, headers: @headers }
 
       it 'updates the record' do
-        expect(response.body).to be_empty
+        expect(response.body).to(be_empty)
       end
 
       it 'returns status code 200' do
-        expect(response).to have_http_status(200)
+        expect(response).to(have_http_status(200))
       end
     end
 
@@ -120,7 +123,7 @@ RSpec.describe 'Tasks API', type: :request do
       before { put "/tasks/#{task_id_2}", params: valid_attributes, headers: @headers }
 
       it 'returns status code 401' do
-        expect(response).to have_http_status(401)
+        expect(response).to(have_http_status(401))
       end
     end
   end
@@ -131,7 +134,7 @@ RSpec.describe 'Tasks API', type: :request do
       before { delete "/tasks/#{task_id}", headers: @headers }
 
       it 'returns status code 200' do
-        expect(response).to have_http_status(200)
+        expect(response).to(have_http_status(200))
       end
     end
 
@@ -139,7 +142,7 @@ RSpec.describe 'Tasks API', type: :request do
       before { delete "/tasks/#{task_id_2}" }
 
       it 'returns status code 401' do
-        expect(response).to have_http_status(401)
+        expect(response).to(have_http_status(401))
       end
     end
   end

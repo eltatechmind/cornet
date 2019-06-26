@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Task, type: :model do
+RSpec.describe(Task, type: :model) do
   # Association test
   # ensure a task record belongs to a single project record
   it { should belong_to(:project) }
