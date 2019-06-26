@@ -56,7 +56,7 @@ class CommentsController < ApplicationController
 
   def csv_files
     @csv_url = params[:url]
-    ProcessCsv.new(params[:url]).proce
+    ProcessCsv.new(params[:url], @user.id).proce
   end
 
   private
