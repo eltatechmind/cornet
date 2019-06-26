@@ -41,6 +41,21 @@ or check my older tutorial with photos for a task I finished earlier for another
 
 - for importing csv files records into our web api database, I created a model called Mycsv, which is in a many to one relation with user model.
 - since we can't send csv file as a parameter in postman, the csv file will be hosted on amazon aws first, for me I used Dropbox which is free, I uploaded the file there, then I downloaded the file through chrome, copy the download link, then visit the /csvfiles endpoint from postman while sending param of key "url" and value "the download link", this will start importing the csv file content into our Mycsv model, each row in the csv file as a record, and every record will have a user_id column too which show this record was imported by which user (according to which user was logging in when he was importing the file)
+- the Mycsv model has no endpoints to call, or controller for sure, as these files are being imported to the database from the csv files.
+- the Mycsv model consists of two columns, "first" and "second", you can rename them according to the need of the data being stored in the model
+
+## Exception Handling
+
+- a file was created for handling exceptions
+
+## Future (if there was more time)
+- I would add rubocop
+- I would get the api on production
+- I would connect my rails api to rollbar for catching production errors
+- I would use graphql and implementing it from scratch for the first time
+- I would create a background service
+
+-- Thanks, feel free to send me any question about the api --
 
 
 
