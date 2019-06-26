@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_25_211719) do
+ActiveRecord::Schema.define(version: 2019_06_26_040514) do
 
   create_table "comments", force: :cascade do |t|
     t.string "content"
@@ -18,6 +18,13 @@ ActiveRecord::Schema.define(version: 2019_06_25_211719) do
     t.datetime "updated_at", null: false
     t.integer "task_id"
     t.index ["task_id"], name: "index_comments_on_task_id"
+  end
+
+  create_table "mycsvs", force: :cascade do |t|
+    t.integer "first"
+    t.integer "second"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "projects", force: :cascade do |t|

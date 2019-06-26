@@ -1,0 +1,2 @@
+class Mycsv < ApplicationRecord
+end
