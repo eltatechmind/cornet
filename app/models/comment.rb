@@ -3,4 +3,5 @@ class Comment < ApplicationRecord
   validates :content, presence: true,
                    length: { minimum: 6, maximum: 35},
                    uniqueness: { case_sensitive: false }
+  has_many :mycsvs, dependent: :destroy                 
 end

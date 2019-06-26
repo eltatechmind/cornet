@@ -23,6 +23,7 @@ gem 'awesome_print'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'devise'
+gem 'rubocop'
 gem 'devise_token_auth'
 gem 'fast_jsonapi'
 # Reduces boot times through caching; required in config/boot.rb

@@ -3,8 +3,8 @@ class CommentsController < ApplicationController
   require 'net/http'
   before_action :authenticate_user!
   before_action :set_current_user
-  before_action :set_task, except: [:csv_files]
-  before_action :set_task_comment, only: [:show, :update, :destroy], except: [:csv_files]
+  before_action :set_task, except: [:csv_files, :display_csv_imported]
+  before_action :set_task_comment, only: [:show, :update, :destroy], except: [:csv_files, :display_csv_imported]
 
   # GET /tasks/:task_id/comments
   def index
@@ -55,18 +55,31 @@ class CommentsController < ApplicationController
   end
 
   def csv_files
-    @csv_url = params[:url]
-    ProcessCsv.new(params[:url], @user.id).proce
+    @comment = Comment.find(params[:comment_id])
+    if @comment.task.project.user_id == @user.id
+      ProcessCsv.new(params[:url], @comment.id).proce
+    else
+      head :unauthorized
+    end
+  end
+
+  def display_csv_imported
+    @comment = Comment.find(params[:comment_id])
+    if @comment.task.project.user_id == @user.id
+      render json: @comment.mycsvs, status: :ok
+    else
+      head :unauthorized
+    end
   end
 
   private
 
   def set_current_user
-     @user = current_user
+    @user = current_user
   end
 
   def comment_params
-    params.permit(:content, :task_id, :url)
+    params.permit(:content, :task_id, :url, :comment_id)
   end
 
   def set_task
